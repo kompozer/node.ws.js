@@ -52,7 +52,7 @@ exports.createServer = function (websocketListener) {
         if(chunk[0] == "\u0000") {
           emitter.emit("data", chunk.slice(1));
         } else {
-          socket.close();
+          socket.end();
           return;
         }
       }
@@ -65,7 +65,7 @@ exports.createServer = function (websocketListener) {
 
       if(/<policy-file-request.*>/.exec(headers[0])) {
         socket.write(policy_file);
-        socket.close();
+        socket.end();
         return;
       }
 
@@ -78,7 +78,7 @@ exports.createServer = function (websocketListener) {
             matches.push(match[1]);
           }
         } else {
-          socket.close();
+          socket.end();
           return;
         }
       }
@@ -100,7 +100,7 @@ exports.createServer = function (websocketListener) {
         handshake(data);
       }
     }).addListener("end", function () {
-      socket.close();
+      socket.end();
     }).addListener("close", function () {
       if (handshaked) { // don't emit close from policy-requests
         emitter.emit("close");
@@ -115,12 +115,12 @@ exports.createServer = function (websocketListener) {
       } catch(e) { 
         // Socket not open for writing, 
         // should get "close" event just before.
-        socket.close();
+        socket.end();
       }
     }
     
     emitter.close = function () {
-      socket.close();
+      socket.end();
     }
     
     websocketListener(emitter); // emits: "connect", "data", "close", provides: write(data), close()
