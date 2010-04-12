@@ -12,7 +12,7 @@ function nano(template, data) {
 }
 
 var sys = require("sys"),
-  tcp = require("tcp"),
+  net = require("net"),
   headerExpressions = [
     /^GET (\/[^\s]*) HTTP\/1\.1$/,
     /^Upgrade: WebSocket$/,
@@ -32,7 +32,7 @@ var sys = require("sys"),
   policy_file = '<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>';
 
 exports.createServer = function (websocketListener) {
-  return tcp.createServer(function (socket) {
+  return net.createServer(function (socket) {
     socket.setTimeout(0);
     socket.setNoDelay(true);
     socket.setEncoding("utf8");
