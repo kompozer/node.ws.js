@@ -121,7 +121,7 @@ exports.createServer = function (websocketListener) {
       }
     }
     
-    emitter.close = function () {
+    emitter.end = function () {
       socket.end();
     }
     
